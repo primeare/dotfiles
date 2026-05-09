@@ -1,8 +1,8 @@
 {
   // Editor
-  "editor.fontFamily": "Fira Code, monospace",
-  "editor.codeLensFontFamily": "Fira Code, monospace",
-  "editor.inlayHints.fontFamily": "Fira Code, monospace",
+  "editor.fontFamily": "FiraCode Nerd Font, Fira Code, monospace",
+  "editor.codeLensFontFamily": "FiraCode Nerd Font, Fira Code, monospace",
+  "editor.inlayHints.fontFamily": "FiraCode Nerd Font, Fira Code, monospace",
   "editor.fontWeight": "400",
   "editor.fontLigatures": true,
   "editor.fontSize": 13,
@@ -79,6 +79,7 @@
     "source.fixAll.shellcheck": "explicit",
     "source.sortImports": "explicit",
     "source.addMissingImports": "explicit",
+    "source.removeUnusedImports": "never",
     "source.organizeImports": "never",
     "source.sort.json": "never"
   },
@@ -134,6 +135,8 @@
   "workbench.editor.customLabels.enabled": true,
   "workbench.editor.customLabels.patterns": {},
   "workbench.editor.showTabIndex": false,
+  "workbench.browser.showInTitleBar": true,
+  "workbench.openInAgents.enabled": false,
   "workbench.tree.enableStickyScroll": true,
   "workbench.tree.stickyScrollMaxItemCount": 7,
   "workbench.tree.renderIndentGuides": "always",
@@ -232,6 +235,9 @@
 
   // Security
   "security.promptForLocalFileProtocolHandling": false,
+
+  // Chat
+  "chat.disableAIFeatures": true,
 
   // Terminal
   "terminal.explorerKind": "external",
