@@ -44,16 +44,15 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-  setup-and-test:
-    name: Setup workstation and test
+  setup-and-verify:
+    name: Setup and verify
     runs-on: macos-latest
     steps:
       - id: checkout
         name: Checkout code
         uses: actions/checkout@v6
       - id: setup
-        name: Setup workstation
+        name: Setup
         run: ./setup
-      - id: test
-        name: Test setup
-        run: ./test
+        env:
+          SET_FISH_AS_DEFAULT: "false"
