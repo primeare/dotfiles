@@ -1,71 +1,59 @@
 #!/usr/bin/env bash
 
-# exit immediately if a pipeline exits with a non-zero status
-set -Eeuxo pipefail
+set -Eeuo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" &> /dev/null && pwd)"
+[[ "${DEBUG:-false}" == "true" ]] && set -x
 
-# TODO: use "associative array" when Bash 4 comes to macOS
-LINKING_MAP=(
-  "$SCRIPT_DIR/.gitconfig:$HOME/.config/git/config"
-  "$SCRIPT_DIR/.gitmessage:$HOME/.gitmessage"
-  "$SCRIPT_DIR/.npmrc:$HOME/.npmrc"
-  "$SCRIPT_DIR/.config/fish/config.fish:$HOME/.config/fish/config.fish"
-  "$SCRIPT_DIR/.config/fish/functions:$HOME/.config/fish"
-  "$SCRIPT_DIR/.config/fish/completions:$HOME/.config/fish"
-  "$SCRIPT_DIR/.config/starship.toml:$HOME/.config/starship.toml"
-  "$SCRIPT_DIR/.vscode/settings.json:$HOME/Library/Application Support/Code/User/settings.json"
-  "$SCRIPT_DIR/.vscode/keybindings.json:$HOME/Library/Application Support/Code/User/keybindings.json"
-  "$SCRIPT_DIR/.vscode/global.code-snippets:$HOME/Library/Application Support/Code/User/snippets/global.code-snippets"
-)
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SETUP_DIR="$DOTFILES_DIR/scripts/setup"
+BACKUP_DIR="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
 
-# print macOS version information
-sw_vers
+export DOTFILES_DIR
+export BACKUP_DIR
 
-if [[ "${CI:-false}" != "true" ]]; then
-  # accept XCode license
-  sudo xcodebuild -license accept
+# shellcheck source=scripts/setup/logging.sh
+source "$SETUP_DIR/logging.sh"
 
-  # install Apple's Command Line Tools
-  # ignore "already installed" error if it appears
-  xcode-select --install || true
+# shellcheck source=scripts/setup/xcode.sh
+source "$SETUP_DIR/xcode.sh"
 
-  # Install all available software updates (OS, Safari, security etc.)
-  softwareupdate --install --all --agree-to-license --verbose
-fi
+# shellcheck source=scripts/setup/homebrew.sh
+source "$SETUP_DIR/homebrew.sh"
 
-# Install Fish shell
-"$SCRIPT_DIR/scripts/install-fish.sh"
+# shellcheck source=scripts/setup/fish.sh
+source "$SETUP_DIR/fish.sh"
 
-# Install Starship prompt
-"$SCRIPT_DIR/scripts/install-starship.sh"
+# shellcheck source=scripts/setup/fnm.sh
+source "$SETUP_DIR/fnm.sh"
 
-# Install fonts
-"$SCRIPT_DIR/scripts/install-fonts.sh"
+# shellcheck source=scripts/setup/symlinks.sh
+source "$SETUP_DIR/symlinks.sh"
 
-# Install Visual Studio Code
-"$SCRIPT_DIR/scripts/install-vscode.sh"
+# shellcheck source=scripts/setup/verify.sh
+source "$SETUP_DIR/verify.sh"
 
-# Create directories if they don't exist
-mkdir -p -v "$HOME/.config/git"
-mkdir -p -v "$HOME/.config/fish"
-mkdir -p -v "$HOME/Library/Application Support/Code/User/snippets"
+main() {
+  install_xcode_command_line_tools
 
-# Create symbolic links to file and directories in the .dotfiles
-for LINK in "${LINKING_MAP[@]}"; do
-  SOURCE="${LINK%%:*}"
-  DESTINATION="${LINK##*:}"
-  ln -f -s -v "$SOURCE" "$DESTINATION"
-done
+  install_homebrew
+  load_homebrew
 
-# Install FNM (Fast Node Manager)
-"$SCRIPT_DIR/scripts/install-fnm.sh"
+  install_homebrew_packages
+  install_homebrew_casks
 
-# Install Docker Desktop
-"$SCRIPT_DIR/scripts/install-docker.sh"
+  setup_homebrew_for_fish
+  setup_fnm
+  install_latest_node
 
-# Install AWS CLI
-"$SCRIPT_DIR/scripts/install-aws-cli.sh"
+  link_dotfiles
 
-# Install Visual Studio Code extensions
-"$SCRIPT_DIR/scripts/install-vscode-extensions.sh"
+  verify_fish_config
+
+  setup_fish_shell
+
+  verify_installation
+
+  log "Dotfiles setup complete"
+}
+
+main "$@"
