@@ -1,3 +1,6 @@
+# Disable Fish greeting
+set --global fish_greeting
+
 # add local executables to PATH
 fish_add_path "$HOME/.npm-packages/bin"
 fish_add_path "$HOME/.bin"
