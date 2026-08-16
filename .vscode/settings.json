@@ -154,6 +154,7 @@
   "workbench.diffEditorAssociations": {
     "*.md": "vscode.markdown.preview.editor"
   },
+  "workbench.experimental.modernUI": true,
 
   // Files
   "files.trimFinalNewlines": true,
