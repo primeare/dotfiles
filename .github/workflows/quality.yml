@@ -35,7 +35,7 @@ jobs:
           fetch-depth: 0
       - id: sonarcloud
         name: SonarCloud Scan
-        uses: sonarsource/sonarqube-scan-action@v7
+        uses: sonarsource/sonarqube-scan-action@v8
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - id: shellcheck
