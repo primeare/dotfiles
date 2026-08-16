@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+[[ "${DEBUG:-false}" == "true" ]] && set -x
+
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SETUP_DIR="$DOTFILES_DIR/scripts/setup"
+BACKUP_DIR="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
+
+export DOTFILES_DIR
+export BACKUP_DIR
+
+# shellcheck source=scripts/setup/logging.sh
+source "$SETUP_DIR/logging.sh"
+
+# shellcheck source=scripts/setup/xcode.sh
+source "$SETUP_DIR/xcode.sh"
+
+# shellcheck source=scripts/setup/homebrew.sh
+source "$SETUP_DIR/homebrew.sh"
+
+# shellcheck source=scripts/setup/fish.sh
+source "$SETUP_DIR/fish.sh"
+
+# shellcheck source=scripts/setup/fnm.sh
+source "$SETUP_DIR/fnm.sh"
+
+# shellcheck source=scripts/setup/ssh.sh
+source "$SETUP_DIR/ssh.sh"
+
+# shellcheck source=scripts/setup/symlinks.sh
+source "$SETUP_DIR/symlinks.sh"
+
+# shellcheck source=scripts/setup/verify.sh
+source "$SETUP_DIR/verify.sh"
+
+main() {
+  install_xcode_command_line_tools
+
+  install_homebrew
+  load_homebrew
+  install_homebrew_bundle
+  setup_homebrew_for_fish
+
+  setup_fnm
+  install_latest_node
+
+  link_dotfiles
+  setup_ssh
+  generate_ssh_key
+
+  verify_fish_config
+
+  setup_fish_shell
+
+  verify_installation
+
+  log "Dotfiles setup complete"
+}
+
+main "$@"

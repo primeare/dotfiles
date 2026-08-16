@@ -1,0 +1,130 @@
+# See `git help config` for more information
+
+[init]
+	defaultBranch = main
+[status]
+	aheadBehind = true
+	submoduleSummary = true
+	showUntrackedFiles = all
+	showStash = true
+	renames = copies
+[branch]
+  autoSetupMerge = always
+  autoSetupRebase = always
+	sort = -committerdate
+[fetch]
+	prune = true
+	writeCommitGraph = true
+[pull]
+	rebase = true # merges
+[push]
+	default = upstream
+	followTags = true
+	autoSetupRemote = true
+[rebase]
+	autoStash = true
+	updateRefs = true
+	missingCommitsCheck = error
+[commit]
+	cleanup = strip
+	template = ~/.gitmessage
+[diff]
+	tool = vscode
+	renames = copies
+	mnemonicPrefix = true
+	submodule = log
+[difftool "vscode"]
+	cmd = code --wait --diff "$REMOTE" "$LOCAL"
+[merge]
+	tool = vscode
+	autoStash = true
+[mergetool]
+	keepBackup = false
+	keepTemporaries = false
+	writeToTemp = true
+	prompt = false
+[mergetool "vscode"]
+	cmd = code --wait --merge "$REMOTE" "$LOCAL" "$BASE" "$MERGED"
+	trustExitCode = true
+[core]
+	editor = code --wait
+	pager = less --quit-if-one-screen --tabs=4
+	untrackedCache = true
+	fsmonitor = true
+	# whitespace = trailing-space,space-before-tab,-indent-with-non-tab,tab-in-indent,cr-at-eol
+[color]
+	ui = auto
+[column]
+	ui = auto
+[user]
+	name = Vladyslav Dukhin
+	email = 15850680+primeare@users.noreply.github.com
+[credential]
+	helper = osxkeychain
+[grep]
+	break = true
+	heading = true
+	lineNumber = true
+	extendedRegexp = true
+[log]
+	abbrevCommit = true
+	follow = true
+	showSignature = true
+[tag]
+	sort = version:refname
+[versionsort]
+	suffix = -pre
+	suffix = .pre
+	suffix = -alpha
+	suffix = .alpha
+	suffix = -beta
+	suffix = .beta
+	suffix = -rc
+	suffix = .rc
+[rerere]
+	# Reuse Recorded Resolution
+	enabled = true
+	autoUpdate = true
+[instaweb]
+	local = true
+	port = 4321
+[alias]
+	# ex. (git s)
+	s = status
+	# ex. (git c)
+	c = commit --signoff
+	# ex. (git ca)
+	ca = commit --signoff --amend
+	# ex. (git fixup $COMMIT_SHA)
+	fixup = commit --signoff --fixup
+	# ex. (git co main, git co -b feature, git co -)
+	co = checkout
+	# ex. (git b)
+	b = branch -vv
+	# force delete branch, ex. (git db feature-branch)
+	db = branch --delete --force
+	# pull without rebase
+	pu = pull --no-rebase --ff --signoff
+	# pushes changes to the remote branch of the same name
+	# ex. (git p)
+	p = push origin HEAD # use --signed flag
+	fp = push --force-with-lease --force-if-includes origin HEAD
+	# outputs the log graph of git history with statistics
+	# ex. (git l, git l --since='2 weeks ago')
+	l = log --oneline --graph --decorate --date=relative --stat
+	# stash staged changes
+	# ex. (git st "some awesome code")
+	st = stash push --staged --message
+	# ex. (git stl)
+	stl = stash list
+	# outputs log that relates to a specified file
+	# ex. (git file-log .gitconfig)
+	file-log = log --follow --graph --decorate --patch --
+	# outputs a condensed summary of the working directory against the branch
+	# ex. (git summary, git summary main)
+	summary = diff --word-diff --compact-summary
+	# undo last commit but keep changes in stage
+	undo = reset --soft HEAD~1
+	# ex. (git aliases)
+	aliases = config --get-regexp alias
+	# git maintenance start

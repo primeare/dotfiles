@@ -1,0 +1,60 @@
+name: Quality Checks
+run-name: ${{ github.workflow }} of ${{ github.sha }} on ${{ github.ref_name }}
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+concurrency:
+  group: "${{ github.workflow }} at ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}"
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+    steps:
+      - id: checkout
+        name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - id: sonarcloud
+        name: SonarCloud Scan
+        uses: sonarsource/sonarqube-scan-action@v7
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - id: shellcheck
+        name: Differential ShellCheck
+        uses: redhat-plumbers-in-action/differential-shellcheck@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  setup-and-verify:
+    name: Setup and verify
+    runs-on: macos-latest
+    permissions:
+      contents: read
+    steps:
+      - id: checkout
+        name: Checkout code
+        uses: actions/checkout@v6
+      - id: setup
+        name: Setup
+        run: ./setup
+        env:
+          SET_FISH_AS_DEFAULT: "false"

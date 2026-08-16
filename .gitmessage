@@ -1,0 +1,24 @@
+
+# ===========================
+# Conventional commits Guide
+# ===========================
+# Summary:
+# - <type>(<scope>): <subject>
+# - max 72 chars, ideally fewer than 50
+# - type: fix, feat, test, docs, refactor, perf, chore, build, ci, style, revert
+# - scope: common, core, client, server, router, service, changelog etc.
+# - subject: a succinct description of the change in imperative present tense
+# - ! after the type/scope, introduces a breaking change
+# Summary examples:
+# - feat(parser): add ability to parse arrays
+# - refactor(runtime)!: drop support for Node.js 10
+# - docs: correct spelling of CHANGELOG
+# Body (optional) examples:
+# - This reverts commit <commit-hash>
+# Trailer (optional) examples:
+# - BREAKING CHANGE: <description>
+# - Co-authored-by: name <name@example.com>
+# - Signed-off-by: name <name@example.com>
+# - Closes/Fixes/Resolves: #ISSUE-NUMBER or OWNER/REPOSITORY#ISSUE-NUMBER
+# - Refs #ISSUE-NUMBER (not a complete fix)
+# ===========================

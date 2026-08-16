@@ -1,0 +1,28 @@
+# Font
+font-family = "FiraCode Nerd Font"
+font-feature = +calt, +liga, +dlig, +ss01, +ss02, +ss03, +ss04, +ss05, +ss06, +ss07
+
+# Theme
+theme = GitHub Dark
+background-opacity = 0.8
+background-opacity-cells = true
+# background-blur = macos-glass-regular / macos-glass-clear
+background-blur = 20
+# selection-foreground = cell-foreground
+# selection-background = cell-background
+unfocused-split-opacity = 0.6
+
+selection-clear-on-copy = true
+mouse-hide-while-typing = true
+
+# Notifications
+notify-on-command-finish = unfocused
+notify-on-command-finish-action = bell, notify
+notify-on-command-finish-after = 30s
+
+# Window
+maximize = true
+window-padding-x = 10
+window-padding-y = 10
+window-padding-balance = true
+window-title-font-family = "FiraCode Nerd Font"
